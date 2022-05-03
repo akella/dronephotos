@@ -9,13 +9,13 @@ import gsap from "gsap";
 
 import camera from "../camera.glb";
 
-import photo1 from "../DJI_0175_0_.jpg";
-import photo2 from "../DJI_0176_1_.jpg";
-import photo3 from "../DJI_0177_2.jpg";
-import photo4 from "../DJI_0178_3.jpg";
-import photo5 from "../DJI_0179_4.jpg";
-import photo6 from "../DJI_0180_5.jpg";
-import photo7 from "../DJI_0269_6.jpg";
+import photo1 from "../_DJI_0175_0.jpg";
+import photo2 from "../_DJI_0176_1.jpg";
+import photo3 from "../_DJI_0177_2.jpg";
+import photo4 from "../_DJI_0178_3.jpg";
+import photo5 from "../_DJI_0179_4.jpg";
+import photo6 from "../_DJI_0180_5.jpg";
+import photo7 from "../_DJI_0269_6.jpg";
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var R = 6371; // Radius of the earth in km
@@ -79,90 +79,90 @@ export default class Sketch {
         FlightYawDegree: 15.5,
         FlightPitchDegree: -0.1,
       },
-      // {
-      //   photo: photo2,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716281629,
-      //   lon: 23.969627899,
-      //   absheight: +360.257,
-      //   relheight: 40.1,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.6,
-      //   FlightYawDegree: 6.1,
-      //   FlightPitchDegree: -0.6,
-      // },
-      // {
-      //   photo: photo3,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716512309,
-      //   lon: +23.969659965,
-      //   absheight: +360.257,
-      //   relheight: 40.1,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.5,
-      //   FlightYawDegree: 6.0,
-      //   FlightPitchDegree: -0.0,
-      // },
-      // {
-      //   photo: photo4,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716493433,
-      //   lon: +23.969887883,
-      //   absheight: +360.157,
-      //   relheight: 40.,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.2,
-      //   FlightYawDegree: 6.1,
-      //   FlightPitchDegree: -0.0,
-      // },
-      // {
-      //   photo: photo5,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716494633,
-      //   lon: +23.969889327,
-      //   absheight: +389.757,
-      //   relheight: 69.600,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.4,
-      //   FlightYawDegree: 6.1,
-      //   FlightPitchDegree: -0.6,
-      // },
-      // {
-      //   photo: photo6,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716498767,
-      //   lon: +23.969887784,
-      //   absheight: +389.657,
-      //   relheight: 69.500,
-      //   Roll: 0.0,
-      //   Yaw: 59.3,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -4.5,
-      //   FlightYawDegree: 20.9,
-      //   FlightPitchDegree: 1.5,
-      // },
       {
-        photo: photo7,
+        photo: photo2,
         lat: "49.716282, 23.969628",
-        lat: 49.716311060,
-        lon: +23.969853840,
-        absheight: +321.357,
-        relheight: 1.200,
+        lat: 49.716281629,
+        lon: 23.969627899,
+        absheight: +360.257,
+        relheight: 40.1,
         Roll: 0.0,
-        Yaw: 111.7,
-        Pitch: -19.4,
-        FlightRollDegree: -1.4,
-        FlightYawDegree: 73.3,
-        FlightPitchDegree: 5.3,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.6,
+        FlightYawDegree: 6.1,
+        FlightPitchDegree: -0.6,
       },
+      {
+        photo: photo3,
+        lat: "49.716282, 23.969628",
+        lat: 49.716512309,
+        lon: +23.969659965,
+        absheight: +360.257,
+        relheight: 40.1,
+        Roll: 0.0,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.5,
+        FlightYawDegree: 6.0,
+        FlightPitchDegree: -0.0,
+      },
+      {
+        photo: photo4,
+        lat: "49.716282, 23.969628",
+        lat: 49.716493433,
+        lon: +23.969887883,
+        absheight: +360.157,
+        relheight: 40.,
+        Roll: 0.0,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.2,
+        FlightYawDegree: 6.1,
+        FlightPitchDegree: -0.0,
+      },
+      {
+        photo: photo5,
+        lat: "49.716282, 23.969628",
+        lat: 49.716494633,
+        lon: +23.969889327,
+        absheight: +389.757,
+        relheight: 69.600,
+        Roll: 0.0,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.4,
+        FlightYawDegree: 6.1,
+        FlightPitchDegree: -0.6,
+      },
+      {
+        photo: photo6,
+        lat: "49.716282, 23.969628",
+        lat: 49.716498767,
+        lon: +23.969887784,
+        absheight: +389.657,
+        relheight: 69.500,
+        Roll: 0.0,
+        Yaw: 59.3,
+        Pitch: -89.9,
+        FlightRollDegree: -4.5,
+        FlightYawDegree: 20.9,
+        FlightPitchDegree: 1.5,
+      },
+      // {
+      //   photo: photo7,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716311060,
+      //   lon: +23.969853840,
+      //   absheight: +321.357,
+      //   relheight: 1.200,
+      //   Roll: 0.0,
+      //   Yaw: 111.7,
+      //   Pitch: -19.4,
+      //   FlightRollDegree: -1.4,
+      //   FlightYawDegree: 73.3,
+      //   FlightPitchDegree: 5.3,
+      // },
     ];
 
     this.container = options.dom;
@@ -219,7 +219,7 @@ export default class Sketch {
     let that = this;
     this.settings = {
       // progress: 0,
-      fov: 48,
+      fov: 57,
       // angle2: 0.01,
     };
     this.gui = new GUI();
@@ -258,7 +258,7 @@ export default class Sketch {
     let relative = 40;
     this.data.forEach((d,i)=>{
       d.projcamera = new THREE.PerspectiveCamera(
-        48,
+        57,
         window.innerWidth / window.innerHeight,
         0.001,
         1000
