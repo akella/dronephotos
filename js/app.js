@@ -46,7 +46,7 @@ function getAzimuth(lat1, lon1, lat2, lon2) {
     Math.sin(phi1) * Math.cos(phi2) * Math.cos(delta);
   var theta = Math.atan2(y, x);
   console.log(theta)
-  return theta ;
+  return theta +2.45*0 ;
 }
 
 function todegrees(radians) {
@@ -66,20 +66,6 @@ export default class Sketch {
 
     this.data = [
       {
-        photo: photo1,
-        lat: "49.715960, 23.969466",
-        lat: 49.715960258,
-        lon: 23.969466066,
-        absheight: 360.857,
-        relheight: 40.7,
-        Roll: 0.0,
-        Yaw: 53.7,
-        Pitch: -61.3,
-        FlightRollDegree: -4.8,
-        FlightYawDegree: 15.5,
-        FlightPitchDegree: -0.1,
-      },
-      {
         photo: photo2,
         lat: "49.716282, 23.969628",
         lat: 49.716281629,
@@ -93,6 +79,21 @@ export default class Sketch {
         FlightYawDegree: 6.1,
         FlightPitchDegree: -0.6,
       },
+      {
+        photo: photo1,
+        lat: "49.715960, 23.969466",
+        lat: 49.715960258,
+        lon: 23.969466066,
+        absheight: 360.857,
+        relheight: 40.7,
+        Roll: 0.0,
+        Yaw: 53.7,
+        Pitch: -61.3,
+        FlightRollDegree: -4.8,
+        FlightYawDegree: 15.5,
+        FlightPitchDegree: -0.1,
+      },
+      
       {
         photo: photo3,
         lat: "49.716282, 23.969628",
@@ -221,6 +222,12 @@ export default class Sketch {
       // progress: 0,
       fov: 57,
       // angle2: 0.01,
+      photo1: true,
+      photo2: true,
+      photo3: true,
+      photo4: true,
+      photo5: true,
+      photo6: true,
     };
     this.gui = new GUI();
     // this.gui.add(this.settings, "progress", 0, 1, 0.01);
@@ -235,6 +242,32 @@ export default class Sketch {
 
     });
 
+    this.gui.add(this.settings, "photo1").onChange(()=>{
+      this.toggle(0)
+    })
+    this.gui.add(this.settings, "photo2").onChange(()=>{
+      this.toggle(1)
+    })
+    this.gui.add(this.settings, "photo3").onChange(()=>{
+      this.toggle(2)
+    })
+    this.gui.add(this.settings, "photo4").onChange(()=>{
+      this.toggle(3)
+    })
+    this.gui.add(this.settings, "photo5").onChange(()=>{
+      this.toggle(4)
+    })
+    this.gui.add(this.settings, "photo6").onChange(()=>{
+      this.toggle(5)
+    })
+
+  }
+
+  toggle(index){
+
+    this.data[index].floor.visible = !this.data[index].floor.visible;
+    this.data[index].cam.visible = !this.data[index].cam.visible;
+    this.data[index].helper.visible = !this.data[index].helper.visible;
   }
 
   setupResize() {
@@ -280,7 +313,8 @@ export default class Sketch {
         this.data[0].lat,
         this.data[0].lon,
         d.lat,
-        d.lon
+        d.lon,
+        2.45*0
       );
       let dist =
         10 *
@@ -292,14 +326,14 @@ export default class Sketch {
         );
         // console.log(dist,az,'loop')
 
-      let secondDrone = new THREE.Vector3(Math.cos(az), 0, Math.sin(az)).multiplyScalar(dist);
+      let secondDrone = new THREE.Vector3(Math.sin(az), 0, Math.cos(az)).multiplyScalar(-dist);
       if(i==0) secondDrone = new THREE.Vector3(0,0,0);
 
       d.cam.position.copy(secondDrone)
       d.cam.position.y = d.relheight / 100;
 
       let pitch1 = deg2rad(d.Pitch);
-      let yaw1 = -deg2rad(d.Yaw);
+      let yaw1 = -deg2rad(d.FlightYawDegree);
       let matPitch = new THREE.Matrix4().makeRotationAxis(
         new THREE.Vector3(1, 0, 0),
         pitch1
