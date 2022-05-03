@@ -24,5 +24,5 @@ void main() {
   
   texCoordProj = textureMatrixProj * modelMatrix * vec4(position , 1.0);  // for projective texturing
   gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  vTexCoords = projectionMatrix * viewMatrix * vWorldPosition;
+  texCoordProj = textureMatrixProj * modelMatrix * vec4(position , 1.0); 
 }

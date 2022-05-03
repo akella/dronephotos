@@ -11,6 +11,11 @@ import camera from "../camera.glb";
 
 import photo1 from "../DJI_0175_0_.jpg";
 import photo2 from "../DJI_0176_1_.jpg";
+import photo3 from "../DJI_0177_2.jpg";
+import photo4 from "../DJI_0178_3.jpg";
+import photo5 from "../DJI_0179_4.jpg";
+import photo6 from "../DJI_0180_5.jpg";
+import photo7 from "../DJI_0269_6.jpg";
 
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var R = 6371; // Radius of the earth in km
@@ -74,19 +79,89 @@ export default class Sketch {
         FlightYawDegree: 15.5,
         FlightPitchDegree: -0.1,
       },
+      // {
+      //   photo: photo2,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716281629,
+      //   lon: 23.969627899,
+      //   absheight: +360.257,
+      //   relheight: 40.1,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.6,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      // },
+      // {
+      //   photo: photo3,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716512309,
+      //   lon: +23.969659965,
+      //   absheight: +360.257,
+      //   relheight: 40.1,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.5,
+      //   FlightYawDegree: 6.0,
+      //   FlightPitchDegree: -0.0,
+      // },
+      // {
+      //   photo: photo4,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716493433,
+      //   lon: +23.969887883,
+      //   absheight: +360.157,
+      //   relheight: 40.,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.2,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.0,
+      // },
+      // {
+      //   photo: photo5,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716494633,
+      //   lon: +23.969889327,
+      //   absheight: +389.757,
+      //   relheight: 69.600,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.4,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      // },
+      // {
+      //   photo: photo6,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716498767,
+      //   lon: +23.969887784,
+      //   absheight: +389.657,
+      //   relheight: 69.500,
+      //   Roll: 0.0,
+      //   Yaw: 59.3,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -4.5,
+      //   FlightYawDegree: 20.9,
+      //   FlightPitchDegree: 1.5,
+      // },
       {
-        photo: photo2,
+        photo: photo7,
         lat: "49.716282, 23.969628",
-        lat: 49.716281629,
-        lon: 23.969627899,
-        absheight: +360.257,
-        relheight: 40.1,
+        lat: 49.716311060,
+        lon: +23.969853840,
+        absheight: +321.357,
+        relheight: 1.200,
         Roll: 0.0,
-        Yaw: 44.1,
-        Pitch: -89.9,
-        FlightRollDegree: -5.6,
-        FlightYawDegree: 6.1,
-        FlightPitchDegree: -0.6,
+        Yaw: 111.7,
+        Pitch: -19.4,
+        FlightRollDegree: -1.4,
+        FlightYawDegree: 73.3,
+        FlightPitchDegree: 5.3,
       },
     ];
 
@@ -116,6 +191,71 @@ export default class Sketch {
     this.ground = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color:0x999999,wireframe: true}));
     this.ground.rotation.x = -Math.PI/2
     this.scene.add(this.ground)
+    this.addObjects()
+
+    this.camera = new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth / window.innerHeight,
+      0.001,
+      1000
+    );
+
+
+    this.camera.position.set(0, 0.5, 0.5);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.time = 0;
+
+    this.isPlaying = true;
+    this.settings();
+
+    this.resize();
+    this.render();
+    this.setupResize();
+    this.addLights();
+  }
+
+  settings() {
+    let that = this;
+    this.settings = {
+      // progress: 0,
+      fov: 48,
+      // angle2: 0.01,
+    };
+    this.gui = new GUI();
+    // this.gui.add(this.settings, "progress", 0, 1, 0.01);
+    this.gui.add(this.settings, "fov", 0, 150, 0.01).onChange(() => {
+
+      this.data.forEach(d=>{
+        d.projcamera.fov = this.settings.fov
+        d.projcamera.updateProjectionMatrix();
+        d.material.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(d.projcamera,d.cam);
+        d.helper.update()
+      })
+
+    });
+
+  }
+
+  setupResize() {
+    window.addEventListener("resize", this.resize.bind(this));
+  }
+
+  resize() {
+    this.width = this.container.offsetWidth;
+    this.height = this.container.offsetHeight;
+    this.renderer.setSize(this.width, this.height);
+    this.camera.aspect = this.width / this.height;
+
+    this.camera.updateProjectionMatrix();
+  }
+
+  // ====================================
+  // ====================================
+  // ====================================
+  // ====================================
+  addObjects(){
+    let relative = 40;
     this.data.forEach((d,i)=>{
       d.projcamera = new THREE.PerspectiveCamera(
         48,
@@ -126,7 +266,7 @@ export default class Sketch {
       d.projcamera.aspect = 1.33
 
       d.cam = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(0.06, 0.06, 0.1),
+        new THREE.BoxBufferGeometry(0.06/10, 0.06/10, 0.1/10),
         new THREE.MeshStandardMaterial({ color: 0xff0000 })
       );
 
@@ -134,7 +274,7 @@ export default class Sketch {
 
       d.helper = new THREE.CameraHelper( d.projcamera );
       this.scene.add( d.helper );
-      
+
 
       let az = getAzimuth(
         this.data[0].lat,
@@ -156,6 +296,7 @@ export default class Sketch {
       if(i==0) secondDrone = new THREE.Vector3(0,0,0);
 
       d.cam.position.copy(secondDrone)
+      d.cam.position.y = d.relheight / 100;
 
       let pitch1 = deg2rad(d.Pitch);
       let yaw1 = -deg2rad(d.Yaw);
@@ -180,7 +321,7 @@ export default class Sketch {
         side: THREE.DoubleSide,
         uniforms: {
           time: { value: 0 },
-          texture1: { value: new THREE.TextureLoader().load(photo1) },
+          texture1: { value: new THREE.TextureLoader().load(d.photo) },
           resolution: { value: new THREE.Vector4() },
           textureMatrixProj: {
             type: "m4",
@@ -195,10 +336,9 @@ export default class Sketch {
       d.floor = new THREE.Mesh(this.geometry, d.material);
       this.scene.add(d.floor)
       d.floor.rotation.x = Math.PI / 2;
-
-      let height = d.relheight / 100;
-      d.floor.position.y = -height + i*0.01;
-      this.ground.position.y = -height - this.data.length*0.01;
+      
+      d.floor.position.y =  i*0.01;
+      this.ground.position.y = this.data.length*0.01;
 
     })
     // ==============================================
@@ -206,241 +346,9 @@ export default class Sketch {
     // ==============================================
     // ==============================================
     // ==============================================
-
-    this.camera = new THREE.PerspectiveCamera(
-      70,
-      window.innerWidth / window.innerHeight,
-      0.001,
-      1000
-    );
-
-    this.projcamera = new THREE.PerspectiveCamera(
-      48,
-      window.innerWidth / window.innerHeight,
-      0.001,
-      1000
-    );
-
-    
-
-    this.projcamera2 = new THREE.PerspectiveCamera(
-      48,
-      window.innerWidth / window.innerHeight,
-      0.001,
-      1000
-    );
-    this.projcamera.aspect = 1.33
-    this.projcamera2.aspect = 1.33
-    this.helper = new THREE.CameraHelper( this.projcamera );
-    this.helper2 = new THREE.CameraHelper( this.projcamera2 );
-    // this.scene.add( this.helper );
-    // this.scene.add( this.helper2 );
-
-    // var frustumSize = 10;
-    // var aspect = window.innerWidth / window.innerHeight;
-    // this.camera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, -1000, 1000 );
-    this.camera.position.set(0, 0.5, 0.5);
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.time = 0;
-
-    this.isPlaying = true;
-    this.settings();
-    // this.addDrones();
-    // this.addObjects();
-    this.resize();
-    this.render();
-    this.setupResize();
-    this.addLights();
-  }
-
-  settings() {
-    let that = this;
-    this.settings = {
-      // progress: 0,
-      fov: 48,
-      // angle2: 0.01,
-    };
-    this.gui = new GUI();
-    // this.gui.add(this.settings, "progress", 0, 1, 0.01);
-    this.gui.add(this.settings, "fov", 0, 150, 0.01).onChange(() => {
-
-      this.data.forEach(d=>{
-        d.projcamera.fov = this.settings.fov
-        d.projcamera.updateProjectionMatrix();
-        d.material.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(d.projcamera,d.cam);
-        d.helper.update()
-      })
-      // this.projcamera.fov = this.settings.fov;
-      // this.projcamera2.fov = this.settings.fov;
-
-      // this.projcamera.updateProjectionMatrix();
-      // this.projcamera2.updateProjectionMatrix();
-      // this.material.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(this.projcamera,this.cam1);
-      // this.material2.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(this.projcamera2,this.cam2);
-
-      // this.helper.update()
-      // this.helper2.update()
-    });
-    // this.gui.add(this.settings, "angle2", 0, Math.PI * 2, 0.01).onChange(() => {
-    //   this.material.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(this.projcamera,this.cam1);
-    //   this.material2.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(this.projcamera2,this.cam2);
-    // });
-  }
-
-  setupResize() {
-    window.addEventListener("resize", this.resize.bind(this));
-  }
-
-  resize() {
-    this.width = this.container.offsetWidth;
-    this.height = this.container.offsetHeight;
-    this.renderer.setSize(this.width, this.height);
-    this.camera.aspect = this.width / this.height;
-
-    this.camera.updateProjectionMatrix();
-  }
-
-  addObjects() {
-    let that = this;
-
-    this.material = new THREE.ShaderMaterial({
-      extensions: {
-        derivatives: "#extension GL_OES_standard_derivatives : enable",
-      },
-      side: THREE.DoubleSide,
-      uniforms: {
-        time: { value: 0 },
-        texture1: { value: new THREE.TextureLoader().load(photo1) },
-        resolution: { value: new THREE.Vector4() },
-        projPosition: { value: this.projcamera.position.clone() },
-        modelMatrixCamera: { value: this.projcamera.matrixWorld.clone() },
-        projectionMatrixCamera: {
-          value: this.projcamera.projectionMatrix.clone(),
-        },
-        viewMatrixCamera: { value: this.projcamera.matrixWorldInverse.clone() },
-        textureMatrixProj: {
-          type: "m4",
-          value: that.makeProjectiveMatrixForLight(this.projcamera, this.cam1),
-        },
-      },
-      // wireframe: true,
-      transparent: true,
-      vertexShader: vertex,
-      fragmentShader: fragment,
-    });
-
-    this.material2 = new THREE.ShaderMaterial({
-      extensions: {
-        derivatives: "#extension GL_OES_standard_derivatives : enable",
-      },
-      side: THREE.DoubleSide,
-      uniforms: {
-        time: { value: 0 },
-        texture1: { value: new THREE.TextureLoader().load(photo2) },
-        resolution: { value: new THREE.Vector4() },
-        projPosition: { value: this.projcamera2.position.clone() },
-        textureMatrixProj: {
-          type: "m4",
-          value: that.makeProjectiveMatrixForLight(this.projcamera2,this.cam2),
-        },
-      },
-      // wireframe: true,
-      transparent: true,
-      vertexShader: vertex,
-      fragmentShader: fragment,
-    });
-
-    this.geometry = new THREE.PlaneBufferGeometry(10, 10,100,100);
-    // this.geometry = new THREE.SphereBufferGeometry(1, 30,30);
-
-    this.plane = new THREE.Mesh(this.geometry, this.material);
-    this.plane2 = new THREE.Mesh(this.geometry, this.material2);
-    this.ground = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color:0x999999,wireframe: true}));
-    this.plane.rotation.x = Math.PI / 2;
-    this.plane2.rotation.x = Math.PI / 2;
-    this.ground.rotation.x = Math.PI / 2;
-    this.scene.add(this.plane);
-    this.scene.add(this.plane2);
-    this.scene.add(this.ground);
-    let height = this.data[0].relheight / 100;
-    this.plane.position.y = -height;
-    this.ground.position.y = -height - 0.01;
-    this.plane2.position.y = -height + 0.01;
-  }
-
-  addDrones() {
-    this.cam = new THREE.Mesh(
-      new THREE.BoxBufferGeometry(0.06, 0.06, 0.1),
-      new THREE.MeshStandardMaterial({ color: 0xff0000 })
-    );
-    // this.scene.add(this.cam)
-    // this.cam.lookAt(0,1,0)
-
-    let height = this.data[0].relheight / 100;
-    // this.plane.position.y = -height;
-
-    let az = getAzimuth(
-      this.data[0].lat,
-      this.data[0].lon,
-      this.data[1].lat,
-      this.data[1].lon
-    );
-    let dist =
-      10 *
-      getDistanceFromLatLonInKm(
-        this.data[0].lat,
-        this.data[0].lon,
-        this.data[1].lat,
-        this.data[1].lon
-      );
-      console.log(dist)
-
-    let secondDrone = new THREE.Vector3(Math.cos(az), 0, Math.sin(az)).multiplyScalar(dist);
-
-    this.cam1 = this.cam.clone();
-
-    this.cam2 = this.cam.clone();
-    this.scene.add(this.cam1);
-    this.scene.add(this.cam2);
-    this.cam2.position.copy(secondDrone);
-
-    let pitch1 = deg2rad(this.data[0].Pitch);
-    let yaw1 = -deg2rad(this.data[0].Yaw);
-    let pitch2 = deg2rad(this.data[1].Pitch);
-    let yaw2 = -deg2rad(this.data[1].Yaw);
-
-   let matPitch = new THREE.Matrix4().makeRotationAxis(
-     new THREE.Vector3(1, 0, 0),
-     pitch1
-   );
-   // yaw
-   let matYaw = new THREE.Matrix4().makeRotationAxis(
-     new THREE.Vector3(0, 1, 0),
-     yaw1
-   );
-   let finalmat = new THREE.Matrix4().multiplyMatrices(matYaw, matPitch)
-   this.cam1.rotation.setFromRotationMatrix(finalmat);
-
-   let matPitch2 = new THREE.Matrix4().makeRotationAxis(
-      new THREE.Vector3(1, 0, 0),
-      pitch2
-    );
-    // yaw
-    let matYaw2 = new THREE.Matrix4().makeRotationAxis(
-      new THREE.Vector3(0, 1, 0),
-      yaw2
-    );
-    let finalmat2 = new THREE.Matrix4().multiplyMatrices(matYaw2, matPitch2)
-    this.cam2.rotation.setFromRotationMatrix(finalmat2);
-
   }
 
 
-// ====================================
-// ====================================
-// ====================================
-// ====================================
   makeProjectiveMatrixForLight(camera,camobject) {
 
     camera.position.copy(camobject.position);
