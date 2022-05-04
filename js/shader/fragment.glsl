@@ -16,7 +16,7 @@ void main()	{
 	vec4 temp = texCoordProj;
 	// temp.y*=1.33;t
 	// texCoordProj.y*=2.;
-	vec4 im1 = temp.q < 0.0 ? vec4(1.0, 0.0, 0.0, 1.0) : texture2DProj( texture1, temp); // for projective texturing
+	vec4 im1 = temp.q < 0.0 ? vec4(1.0, 0.0, 0.0, 0.1) : texture2DProj( texture1, temp); // for projective texturing
 
 	// gl_FragColor = temp(texture1, uv);
 	vec2 uvuv = temp.xy/texCoordProj.z;
@@ -33,7 +33,7 @@ void main()	{
 
 
 	}
-	gl_FragColor.a = 0.4;
+	gl_FragColor.a = 0.8;
 
 	// gl_FragColor = vec4(fract(texCoordProj.xy/texCoordProj.z),0.,1.);
 }
