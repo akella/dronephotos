@@ -1,3 +1,7 @@
+// @todo upload 2 photos get data + projection
+// put markers on them
+import ExifReader from 'exifreader';
+console.log(ExifReader,'ExifReader')
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -26,16 +30,17 @@ import gsap from "gsap";
 
 import camera from "../camera.glb";
 
-import photo1 from "../_DJI_0175_0.jpg";
-import photo2 from "../_DJI_0176_1.jpg";
-import photo3 from "../_DJI_0177_2.jpg";
-import photo4 from "../_DJI_0178_3.jpg";
-import photo5 from "../_DJI_0179_4.jpg";
-import photo6 from "../_DJI_0180_5.jpg";
-import photo7 from "../_DJI_0269_6.jpg";
+// import photo1 from "../_DJI_0175_0.jpg";
+// import photo2 from "../_DJI_0176_1.jpg";
+// import photo3 from "../_DJI_0177_2.jpg";
+// import photo4 from "../_DJI_0178_3.jpg";
+// import photo5 from "../_DJI_0179_4.jpg";
+// import photo6 from "../_DJI_0180_5.jpg";
+// import photo7 from "../_DJI_0269_6.jpg";
 
-import house1 from "../DJI_0199.jpg";
-import house2 from "../DJI_0207.jpg";
+// import house1 from "../DJI_0199.jpg";
+// import house2 from "../DJI_0207.jpg";
+// import house3 from "../DJI_0208.jpg";
 
 
 const ASPECT = 1.333;
@@ -91,22 +96,22 @@ export default class Sketch {
     this.scene.add(this.helpers)
 
     this.data = [
-      {
-        photo: photo2,
-        lat: "49.716282, 23.969628",
-        lat: 49.716281629,
-        lon: 23.969627899,
-        absheight: +360.257,
-        relheight: 40.1,
-        Roll: 0.0,
-        Yaw: 44.1,
-        Pitch: -89.9,
-        FlightRollDegree: -5.6,
-        FlightYawDegree: 6.1,
-        FlightPitchDegree: -0.6,
-        x: 3995/5280,
-        y: 1404/3956,
-      },
+      // {
+      //   photo: photo2,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716281629,
+      //   lon: 23.969627899,
+      //   absheight: +360.257,
+      //   relheight: 40.1,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.6,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      //   x: 3995/5280,
+      //   y: 1404/3956,
+      // },
       // {
       //   photo: photo1,
       //   lat: "49.715960, 23.969466",
@@ -152,22 +157,22 @@ export default class Sketch {
       //   FlightYawDegree: 6.1,
       //   FlightPitchDegree: -0.0,
       // },
-      {
-        photo: photo5,
-        lat: "49.716282, 23.969628",
-        lat: 49.716494633,
-        lon: +23.969889327,
-        absheight: +389.757,
-        relheight: 69.600,
-        Roll: 0.0,
-        Yaw: 44.1,
-        Pitch: -89.9,
-        FlightRollDegree: -5.4,
-        FlightYawDegree: 6.1,
-        FlightPitchDegree: -0.6,
-        x: 2570/5280,
-        y: 3006/3956,
-      },
+      // {
+      //   photo: photo5,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716494633,
+      //   lon: +23.969889327,
+      //   absheight: +389.757,
+      //   relheight: 69.600,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.4,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      //   x: 2570/5280,
+      //   y: 3006/3956,
+      // },
       // {
       //   photo: photo6,
       //   lat: "49.716282, 23.969628",
@@ -211,8 +216,8 @@ export default class Sketch {
       //   FlightRollDegree: 1.60,
       //   FlightYawDegree: 	-105.3,
       //   FlightPitchDegree: -1.1,
-      //     x: 2778/5280,
-      //     y: 2009/3956,
+      //     x: 2766/5280,
+      //     y: 2085/3956,
       // },
       // {
       //   photo: house2,
@@ -227,8 +232,25 @@ export default class Sketch {
       //   FlightRollDegree: -20.1,
       //   FlightYawDegree: 	-101.6,
       //   FlightPitchDegree: -1.1,
-      //     x: 1834/5280,
-      //     y: 2822/3956,
+      //     x: 1823/5280,
+      //     y: 2962/3956,
+      // },
+
+      // {
+      //   photo: house3,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.715579603, // +49.715632179
+      //   lon: 	+23.967325274, // 	+23.967781816
+      //   absheight: +362.157,
+      //   relheight: +42.000,
+      //   Roll: 0.0,
+      //   Yaw: -60.1,
+      //   Pitch: 	-0.3,
+      //   FlightRollDegree: 4.1,
+      //   FlightYawDegree: 	-99.3,
+      //   FlightPitchDegree: -33.1,
+      //     x: 1052/5280,
+      //     y: 3343/3956,
       // },
     ];
 
@@ -257,7 +279,7 @@ export default class Sketch {
     // this.geometry = new THREE.SphereBufferGeometry(300, 40,40);
     // this.geometry.translate(0,300,0)
 
-    this.ground = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color:0x999999,wireframe: true}));
+    this.ground = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color:0x111111,wireframe: true}));
     this.ground.rotation.x = -Math.PI/2
     this.scene.add(this.ground)
     
@@ -282,6 +304,7 @@ export default class Sketch {
     this.render();
     this.setupResize();
     this.addLights();
+    this.addDrag();
 
     this.addObjects()
 
@@ -326,6 +349,10 @@ export default class Sketch {
       photo4: true,
       photo5: true,
       photo6: true,
+      clean: ()=>{
+        this.clean(true)
+        document.getElementById('previews').replaceChildren()
+      }
     };
     this.gui = new GUI();
     // this.gui.add(this.settings, "progress", 0, 1, 0.01);
@@ -363,6 +390,7 @@ export default class Sketch {
     this.gui.add(this.settings, "helpers").onChange(()=>{
       this.helpers.visible = !this.helpers.visible
     }) 
+    this.gui.add(this.settings, "clean")
 
   }
 
@@ -462,7 +490,8 @@ export default class Sketch {
         side: THREE.DoubleSide,
         uniforms: {
           time: { value: 0 },
-          texture1: { value: new THREE.TextureLoader().load(d.photo) },
+          // texture1: { value: new THREE.TextureLoader().load(d.photo) },
+          texture1: { value: d.photo },
           resolution: { value: new THREE.Vector4() },
           textureMatrixProj: {
             type: "m4",
@@ -526,29 +555,51 @@ export default class Sketch {
     // ==============================================
 
     // TRIANGULATE!!
-    let point1 = {
-      lat:this.data[0].lat,
-      lon:this.data[0].lon,
-      bearing: this.data[0].bearing
+    if(this.data.length>1){
+      
+      let point1 = {
+        lat:this.data[0].lat,
+        lon:this.data[0].lon,
+        bearing: this.data[0].bearing
+      }
+      let point2 = {
+        lat:this.data[1].lat,
+        lon:this.data[1].lon,
+        bearing: this.data[1].bearing
+      }
+
+
+      // position RESULT object in scene
+      // let intersection = this.intersect(point1,point2)
+      // console.log(intersection)
+      this.intersectRays(
+        this.data[0].cam.position,this.data[0].ray,
+        this.data[1].cam.position,this.data[1].ray,
+
+        )
+
     }
-    let point2 = {
-      lat:this.data[1].lat,
-      lon:this.data[1].lon,
-      bearing: this.data[1].bearing
-    }
+    // end if
+   
 
 
-    // position RESULT object in scene
-    // let intersection = this.intersect(point1,point2)
-    // console.log(intersection)
-    this.intersectRays(
-      this.data[0].cam.position,this.data[0].ray,
-      this.data[1].cam.position,this.data[1].ray,
-    
-      )
-    
+  }
 
+  clean(flag){
+    this.data.forEach(d=>{
 
+      this.scene.remove(d.cam);
+      this.scene.remove(d.projected);
+      this.scene.remove(d.raymesh);
+      this.scene.remove(d.floor);
+      this.helpers.remove(d.helper);
+
+      
+    })
+
+    this.scene.remove(this.final)
+
+    if(flag) this.data = []
   }
 
   intersectRays(originA,rayA,originB,rayB){
@@ -589,6 +640,8 @@ export default class Sketch {
 
 
     console.log('!!!!FINAL=======',lat0,lon0)
+    document.getElementById('result').innerHTML = 'lat:'+lat0+','+lon0+';';
+    
     // 49.71503061838623 23.965701913328182
     // 49.715030650235846 23.96570190245439
 
@@ -638,12 +691,12 @@ export default class Sketch {
 
 
   putBallAt(v){
-    let final = new THREE.Mesh(
+    this.final = new THREE.Mesh(
       new THREE.SphereBufferGeometry(0.02,10,10),
       new THREE.MeshBasicMaterial({color: 0x00ff00})
     )
-      final.position.copy(v)
-    this.scene.add(final);
+      this.final.position.copy(v)
+    this.scene.add(this.final);
   }
 
 
@@ -651,17 +704,10 @@ export default class Sketch {
 
 
   addBallAt(){
-    // lat: ,
-    // lon: 23.969627899,
-
-
     let lon = rad2deg(0.4183548261524481) 
     let lat = rad2deg(0.86771280627482)
-
-
     // let lon = todegrees(deg2rad(23.969627899))
     // let lat = todegrees(deg2rad(49.716281629))
-
     let az = getAzimuth(
       this.data[0].lat,
       this.data[0].lon,
@@ -740,6 +786,129 @@ export default class Sketch {
     //   const light4  = new THREE.DirectionalLight(0xffffff, 0.2 * Math.PI);
     //   light4.position.set(0, 0,3); // ~60º
     //   this.scene.add( light4 );
+  }
+
+
+  addDrag(){
+
+    let drag = document.createElement('div');
+    document.body.appendChild(drag);
+    drag.style.position = 'fixed';
+    drag.style.top = '50px'
+    drag.style.left = '50px'
+    drag.style.width = '300px'
+    drag.style.height = '100px'
+    drag.style.border = '10px dotted gray'
+
+    drag.addEventListener( 'dragover',  ( event )=>{
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+    } );
+
+    drag.addEventListener( 'drop',  ( event )=> {
+      event.preventDefault();
+      this.loadFile( event.dataTransfer.files[ 0 ] );
+    } );
+  }
+
+  loadFile(file){
+
+   
+
+    const tags = ExifReader.load(file).then((tagresult)=>{
+      const reader = new FileReader();
+      let that = this;
+      
+  
+      reader.addEventListener( 'load',  ( event )=> {
+        function imgCallback( event ) {
+          that.addNewImg(event.target,tagresult) //img
+        }
+        const img = new Image();
+        img.onload = imgCallback;
+        img.src = event.target.result;
+      } );
+  
+      reader.readAsDataURL( file );
+    });
+
+
+   
+  }
+
+  updateAll(){
+    this.clean()
+    this.addObjects()
+  }
+
+
+  addNewImg(img,tags){
+    console.log(tags,'tags')
+    let photo = new THREE.Texture(img);
+    photo.needsUpdate = true;
+    let obj = {
+        photo: photo,
+        lat: tags.GPSLatitude.description, 
+        lon: 	tags.GPSLongitude.description,
+        absheight: tags.AbsoluteAltitude.value,
+        relheight: tags.RelativeAltitude.value,
+        Roll: tags.GimbalRollDegree.value,
+        Yaw: tags.GimbalYawDegree.value,
+        Pitch: 	tags.GimbalPitchDegree.value,
+        FlightRollDegree: tags.FlightRollDegree.value,
+        FlightYawDegree: 	tags.FlightYawDegree.value,
+        FlightPitchDegree: tags.FlightPitchDegree.value,
+        x: 0.5,
+        y: 0.5
+    }
+    this.data.push(obj)
+
+
+    let previews = document.getElementById('previews');
+    let wrap = document.createElement('div')
+    let marker = document.createElement('div')
+    marker.classList.add('marker');
+    let DOMimage = img.cloneNode(true)
+    DOMimage.style.height = '200px'
+    wrap.appendChild(DOMimage)
+    wrap.appendChild(marker)
+    previews.appendChild(wrap)
+    DOMimage.addEventListener('click',(event)=>{
+      console.log(event)
+      obj.x = event.offsetX/(200*ASPECT)
+      obj.y = event.offsetY/(200)
+      marker.style.left = event.offsetX+'px'
+      marker.style.top = event.offsetY+'px'
+      this.updateAll()
+    })
+
+
+
+    this.clean()
+    this.addObjects()
+
+
+
+
+
+
+    // {
+    //   photo: house2,
+    //   lat: "49.716282, 23.969628",
+    //   lat: 49.7156321666667, // +49.715632179
+    //   lon: 	23.9677818055556, // 	+23.967781816
+    //   absheight: +362.157,
+    //   relheight: +42.000,
+    //   Roll: 0.0,
+    //   Yaw: -65.4,
+    //   Pitch: 	-0.3,
+    //   FlightRollDegree: -20.1,
+    //   FlightYawDegree: 	-101.6,
+    //   FlightPitchDegree: -1.1,
+    //     x: 1823/5280,
+    //     y: 2962/3956,
+    // },
+
   }
 
   render() {

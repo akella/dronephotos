@@ -33,7 +33,7 @@ void main()	{
 
 
 	}
-	gl_FragColor.a = 0.8;
+	gl_FragColor.a = 0.4;
 
 	// gl_FragColor = vec4(fract(texCoordProj.xy/texCoordProj.z),0.,1.);
 }
