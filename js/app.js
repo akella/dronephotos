@@ -34,8 +34,8 @@ import photo5 from "../_DJI_0179_4.jpg";
 import photo6 from "../_DJI_0180_5.jpg";
 import photo7 from "../_DJI_0269_6.jpg";
 
-// import house1 from "../DJI_0199.jpg";
-// import house2 from "../DJI_0207.jpg";
+import house1 from "../DJI_0199.jpg";
+import house2 from "../DJI_0207.jpg";
 
 
 const ASPECT = 1.333;
@@ -91,38 +91,38 @@ export default class Sketch {
     this.scene.add(this.helpers)
 
     this.data = [
-      {
-        photo: photo2,
-        lat: "49.716282, 23.969628",
-        lat: 49.716281629,
-        lon: 23.969627899,
-        absheight: +360.257,
-        relheight: 40.1,
-        Roll: 0.0,
-        Yaw: 44.1,
-        Pitch: -89.9,
-        FlightRollDegree: -5.6,
-        FlightYawDegree: 6.1,
-        FlightPitchDegree: -0.6,
-        x: 3995/5280,
-        y: 1404/3956,
-      },
-      {
-        photo: photo1,
-        lat: "49.715960, 23.969466",
-        lat: 49.715960258,
-        lon: 23.969466066,
-        absheight: 360.857,
-        relheight: 40.7,
-        Roll: 0.0,
-        Yaw: 53.7,
-        Pitch: -61.3,
-        FlightRollDegree: -4.8,
-        FlightYawDegree: 15.5,
-        FlightPitchDegree: -0.1,
-        x: 753/1024,
-        y: 139/767,
-      },
+      // {
+      //   photo: photo2,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716281629,
+      //   lon: 23.969627899,
+      //   absheight: +360.257,
+      //   relheight: 40.1,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.6,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      //   x: 3995/5280,
+      //   y: 1404/3956,
+      // },
+      // {
+      //   photo: photo1,
+      //   lat: "49.715960, 23.969466",
+      //   lat: 49.715960258,
+      //   lon: 23.969466066,
+      //   absheight: 360.857,
+      //   relheight: 40.7,
+      //   Roll: 0.0,
+      //   Yaw: 53.7,
+      //   Pitch: -61.3,
+      //   FlightRollDegree: -4.8,
+      //   FlightYawDegree: 15.5,
+      //   FlightPitchDegree: -0.1,
+      //   x: 753/1024,
+      //   y: 139/767,
+      // },
       
       // {
       //   photo: photo3,
@@ -152,22 +152,22 @@ export default class Sketch {
       //   FlightYawDegree: 6.1,
       //   FlightPitchDegree: -0.0,
       // },
-      {
-        photo: photo5,
-        lat: "49.716282, 23.969628",
-        lat: 49.716494633,
-        lon: +23.969889327,
-        absheight: +389.757,
-        relheight: 69.600,
-        Roll: 0.0,
-        Yaw: 44.1,
-        Pitch: -89.9,
-        FlightRollDegree: -5.4,
-        FlightYawDegree: 6.1,
-        FlightPitchDegree: -0.6,
-        x: 2570/5280,
-        y: 3006/3956,
-      },
+      // {
+      //   photo: photo5,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.716494633,
+      //   lon: +23.969889327,
+      //   absheight: +389.757,
+      //   relheight: 69.600,
+      //   Roll: 0.0,
+      //   Yaw: 44.1,
+      //   Pitch: -89.9,
+      //   FlightRollDegree: -5.4,
+      //   FlightYawDegree: 6.1,
+      //   FlightPitchDegree: -0.6,
+      //   x: 2570/5280,
+      //   y: 3006/3956,
+      // },
       // {
       //   photo: photo6,
       //   lat: "49.716282, 23.969628",
@@ -198,38 +198,38 @@ export default class Sketch {
       // },
 
 
-      // {
-      //   photo: house1,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.7156871388889, // +49.715687155
-      //   lon: 	23.9700537777778, // +23.970053793
-      //   absheight: +328.557,
-      //   relheight: +8.400,
-      //   Roll: 0.0,
-      //   Yaw: -66.9,
-      //   Pitch: 	-0.3,
-      //   FlightRollDegree: 1.60,
-      //   FlightYawDegree: 	-105.3,
-      //   FlightPitchDegree: -1.1,
-      //     x: 2778/5280,
-      //     y: 2009/3956,
-      // },
-      // {
-      //   photo: house2,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.7156321666667, // +49.715632179
-      //   lon: 	23.9677818055556, // 	+23.967781816
-      //   absheight: +362.157,
-      //   relheight: +42.000,
-      //   Roll: 0.0,
-      //   Yaw: -65.4,
-      //   Pitch: 	-0.3,
-      //   FlightRollDegree: -20.1,
-      //   FlightYawDegree: 	-101.6,
-      //   FlightPitchDegree: -1.1,
-      //     x: 1834/5280,
-      //     y: 2822/3956,
-      // },
+      {
+        photo: house1,
+        lat: "49.716282, 23.969628",
+        lat: 49.7156871388889, // +49.715687155
+        lon: 	23.9700537777778, // +23.970053793
+        absheight: +328.557,
+        relheight: +8.400,
+        Roll: 0.0,
+        Yaw: -66.9,
+        Pitch: 	-0.3,
+        FlightRollDegree: 1.60,
+        FlightYawDegree: 	-105.3,
+        FlightPitchDegree: -1.1,
+          x: 2778/5280,
+          y: 2009/3956,
+      },
+      {
+        photo: house2,
+        lat: "49.716282, 23.969628",
+        lat: 49.7156321666667, // +49.715632179
+        lon: 	23.9677818055556, // 	+23.967781816
+        absheight: +362.157,
+        relheight: +42.000,
+        Roll: 0.0,
+        Yaw: -65.4,
+        Pitch: 	-0.3,
+        FlightRollDegree: -20.1,
+        FlightYawDegree: 	-101.6,
+        FlightPitchDegree: -1.1,
+          x: 1834/5280,
+          y: 2822/3956,
+      },
     ];
 
     this.container = options.dom;
@@ -540,8 +540,59 @@ export default class Sketch {
 
     // position RESULT object in scene
     let intersection = this.intersect(point1,point2)
-
+    this.intersectRays(
+      this.data[0].cam.position,this.data[0].ray,
+      this.data[1].cam.position,this.data[1].ray,
+    
+      )
     console.log(intersection)
+
+
+  }
+
+  intersectRays(originA,rayA,originB,rayB){
+
+    let Nv = rayA.clone().cross(rayB);
+
+    let Na = rayA.clone().cross(Nv).normalize();
+    let Nb = rayB.clone().cross(Nv).normalize();
+
+    let Da = rayA.clone().normalize();
+    let Db = rayB.clone().normalize();
+
+    let da = originA.clone().sub(originB).dot(Nb) / Da.dot(Nb);
+    let db = originB.clone().sub(originA).dot(Na) / Db.dot(Na);
+
+    console.log('CHECH',originA.clone().sub(originA).dot(Nb))
+
+    let ptA = originA.clone().add(Da.multiplyScalar(-da));
+    let ptB = originB.clone().add(Db.multiplyScalar(-db));
+
+
+    console.log(ptA,ptB,'POINT RESULTS')
+
+    this.putBallAt(ptB)
+
+    // this.data[0].cam.position
+    // this.data[0].lat
+    // this.data[0].lon
+    let R=6378137
+
+    let dE = -(this.data[0].cam.position.x - ptA.x)*100;
+    let dN = (this.data[0].cam.position.z - ptA.z)*100;
+
+    let dLat = dN/R
+    let dLon = dE/(R*cos(PI*this.data[0].lat/180))
+
+    let latRad = deg2rad(this.data[0].lat)
+    let lonRad = deg2rad(this.data[0].lon)
+
+    let lat0 = this.data[0].lat + dLat * 180/PI
+    let lon0 = this.data[0].lon + dLon * 180/PI 
+
+
+    console.log('!!!!=======',lat0,lon0)
+
 
 
   }
@@ -557,7 +608,6 @@ export default class Sketch {
     let pi = PI;
     let dst12 = 2*asin(sqrt((sin((lat1-lat2)/2))**2+
     cos(lat1)*cos(lat2)*sin((lon1-lon2)/2)**2));
-    console.log(lat1,lat2,dst12,'dst12')
     if(sin(lon2-lon1)<0){
        crs12=acos((sin(lat2)-sin(lat1)*cos(dst12))/(sin(dst12)*cos(lat1)))
        crs21=2.*pi-acos((sin(lat1)-sin(lat2)*cos(dst12))/(sin(dst12)*cos(lat2)))
@@ -573,11 +623,10 @@ export default class Sketch {
     if(sin(ang1)===0 && sin(ang2)===0){
        console.log("infinity of intersections")
     }
-    // else if(sin(ang1)*sin(ang2)<0){
-    //    console.log("intersection ambiguous")
-    // }
+    else if(sin(ang1)*sin(ang2)<0){
+       console.log("intersection ambiguous")
+    }
     else{
-      console.log('normal')
        ang1=abs(ang1)
        ang2=abs(ang2)
        let ang3=acos(-cos(ang1)*cos(ang2)+sin(ang1)*sin(ang2)*cos(dst12)) 
@@ -585,10 +634,18 @@ export default class Sketch {
        let lat3=asin(sin(lat1)*cos(dst13)+cos(lat1)*sin(dst13)*cos(crs13))
        let dlon=atan2(sin(crs13)*sin(dst13)*cos(lat1),cos(dst13)-sin(lat1)*sin(lat3))
        let lon3=(lon1-dlon+pi)%(2*pi)-pi;
-      console.log('REFERE:',lon1,lat1, )
-      console.log('RESULT:',lon3,lat3, rad2deg(lon3)+180,rad2deg(lat3))
       this.addBallAt()
     }
+  }
+
+
+  putBallAt(v){
+    let final = new THREE.Mesh(
+      new THREE.SphereBufferGeometry(0.02,10,10),
+      new THREE.MeshBasicMaterial({color: 0x00ff00})
+    )
+      final.position.copy(v)
+    this.scene.add(final);
   }
 
 
