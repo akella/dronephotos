@@ -7,9 +7,68 @@
 		*{margin:0;padding:0} 
 		canvas{display: block}
 		#container{width: 100vw;height: 100vh}
+		#previews{
+			position: fixed;
+			background: rgba(0,0,0,0.3);
+			bottom: 0;
+			left: 0;
+			right: 0;
+			height: 200px;
+			z-index: 100;
+			overflow: auto;
+		}
+		.marker{
+			width: 4px;
+			height: 4px;
+			background:rgba(255,0,0,0.4);
+			position: absolute !important;
+			z-index: 10;
+			opacity: 1;
+			box-shadow: 0 0 1px 3px rgba(255,0,0,0.4);
+			transform: translate(-2px,-2px)
+			
+		}
+		.marker:before{
+			content: ' ';
+			height: 500px;
+			position:absolute;
+			top: -200px;
+			left: 1px;
+			width: 2px;
+			background: green;
+		}
+		.marker:after{
+			content: ' ';
+			width: 600px;
+			position:absolute;
+			left: -300px;
+			top: 1px;
+			height: 2px;
+			background: green;
+		}
+		#previews>div{
+			display: inline-block;
+			position: relative;
+			overflow: hidden;
+			border-right: 4px solid #000;
+		}
+		#previews img{
+			display: block;
+		}
+		#result{
+			position: fixed;
+			top: 0;
+			left: 0;
+			color: #fff;
+			font-size: 20px;
+			padding: 5px;
+			text-shadow: 1px 1px 0 #000;
+		}
     </style>
 </head>
 <body>
+	<div id="result"></div>
+	<div id="previews"></div>
 	<div id="container"></div>
 	<script src="js/app.js" type="module"></script>
 </body>
