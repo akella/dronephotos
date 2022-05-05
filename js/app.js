@@ -91,22 +91,22 @@ export default class Sketch {
     this.scene.add(this.helpers)
 
     this.data = [
-      // {
-      //   photo: photo2,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716281629,
-      //   lon: 23.969627899,
-      //   absheight: +360.257,
-      //   relheight: 40.1,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.6,
-      //   FlightYawDegree: 6.1,
-      //   FlightPitchDegree: -0.6,
-      //   x: 3995/5280,
-      //   y: 1404/3956,
-      // },
+      {
+        photo: photo2,
+        lat: "49.716282, 23.969628",
+        lat: 49.716281629,
+        lon: 23.969627899,
+        absheight: +360.257,
+        relheight: 40.1,
+        Roll: 0.0,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.6,
+        FlightYawDegree: 6.1,
+        FlightPitchDegree: -0.6,
+        x: 3995/5280,
+        y: 1404/3956,
+      },
       // {
       //   photo: photo1,
       //   lat: "49.715960, 23.969466",
@@ -152,22 +152,22 @@ export default class Sketch {
       //   FlightYawDegree: 6.1,
       //   FlightPitchDegree: -0.0,
       // },
-      // {
-      //   photo: photo5,
-      //   lat: "49.716282, 23.969628",
-      //   lat: 49.716494633,
-      //   lon: +23.969889327,
-      //   absheight: +389.757,
-      //   relheight: 69.600,
-      //   Roll: 0.0,
-      //   Yaw: 44.1,
-      //   Pitch: -89.9,
-      //   FlightRollDegree: -5.4,
-      //   FlightYawDegree: 6.1,
-      //   FlightPitchDegree: -0.6,
-      //   x: 2570/5280,
-      //   y: 3006/3956,
-      // },
+      {
+        photo: photo5,
+        lat: "49.716282, 23.969628",
+        lat: 49.716494633,
+        lon: +23.969889327,
+        absheight: +389.757,
+        relheight: 69.600,
+        Roll: 0.0,
+        Yaw: 44.1,
+        Pitch: -89.9,
+        FlightRollDegree: -5.4,
+        FlightYawDegree: 6.1,
+        FlightPitchDegree: -0.6,
+        x: 2570/5280,
+        y: 3006/3956,
+      },
       // {
       //   photo: photo6,
       //   lat: "49.716282, 23.969628",
@@ -198,38 +198,38 @@ export default class Sketch {
       // },
 
 
-      {
-        photo: house1,
-        lat: "49.716282, 23.969628",
-        lat: 49.7156871388889, // +49.715687155
-        lon: 	23.9700537777778, // +23.970053793
-        absheight: +328.557,
-        relheight: +8.400,
-        Roll: 0.0,
-        Yaw: -66.9,
-        Pitch: 	-0.3,
-        FlightRollDegree: 1.60,
-        FlightYawDegree: 	-105.3,
-        FlightPitchDegree: -1.1,
-          x: 2778/5280,
-          y: 2009/3956,
-      },
-      {
-        photo: house2,
-        lat: "49.716282, 23.969628",
-        lat: 49.7156321666667, // +49.715632179
-        lon: 	23.9677818055556, // 	+23.967781816
-        absheight: +362.157,
-        relheight: +42.000,
-        Roll: 0.0,
-        Yaw: -65.4,
-        Pitch: 	-0.3,
-        FlightRollDegree: -20.1,
-        FlightYawDegree: 	-101.6,
-        FlightPitchDegree: -1.1,
-          x: 1834/5280,
-          y: 2822/3956,
-      },
+      // {
+      //   photo: house1,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.7156871388889, // +49.715687155
+      //   lon: 	23.9700537777778, // +23.970053793
+      //   absheight: +328.557,
+      //   relheight: +8.400,
+      //   Roll: 0.0,
+      //   Yaw: -66.9,
+      //   Pitch: 	-0.3,
+      //   FlightRollDegree: 1.60,
+      //   FlightYawDegree: 	-105.3,
+      //   FlightPitchDegree: -1.1,
+      //     x: 2778/5280,
+      //     y: 2009/3956,
+      // },
+      // {
+      //   photo: house2,
+      //   lat: "49.716282, 23.969628",
+      //   lat: 49.7156321666667, // +49.715632179
+      //   lon: 	23.9677818055556, // 	+23.967781816
+      //   absheight: +362.157,
+      //   relheight: +42.000,
+      //   Roll: 0.0,
+      //   Yaw: -65.4,
+      //   Pitch: 	-0.3,
+      //   FlightRollDegree: -20.1,
+      //   FlightYawDegree: 	-101.6,
+      //   FlightPitchDegree: -1.1,
+      //     x: 1834/5280,
+      //     y: 2822/3956,
+      // },
     ];
 
     this.container = options.dom;
@@ -539,19 +539,21 @@ export default class Sketch {
 
 
     // position RESULT object in scene
-    let intersection = this.intersect(point1,point2)
+    // let intersection = this.intersect(point1,point2)
+    // console.log(intersection)
     this.intersectRays(
       this.data[0].cam.position,this.data[0].ray,
       this.data[1].cam.position,this.data[1].ray,
     
       )
-    console.log(intersection)
+    
 
 
   }
 
   intersectRays(originA,rayA,originB,rayB){
 
+    // find closest points on two rays
     let Nv = rayA.clone().cross(rayB);
 
     let Na = rayA.clone().cross(Nv).normalize();
@@ -563,19 +565,14 @@ export default class Sketch {
     let da = originA.clone().sub(originB).dot(Nb) / Da.dot(Nb);
     let db = originB.clone().sub(originA).dot(Na) / Db.dot(Na);
 
-    console.log('CHECH',originA.clone().sub(originA).dot(Nb))
-
     let ptA = originA.clone().add(Da.multiplyScalar(-da));
     let ptB = originB.clone().add(Db.multiplyScalar(-db));
-
-
-    console.log(ptA,ptB,'POINT RESULTS')
-
+    console.log(ptA,ptB,'CLOSEST POINT RESULTS')
     this.putBallAt(ptB)
 
-    // this.data[0].cam.position
-    // this.data[0].lat
-    // this.data[0].lon
+
+
+    // offset drone coordinate with meters
     let R=6378137
 
     let dE = -(this.data[0].cam.position.x - ptA.x)*100;
@@ -591,8 +588,9 @@ export default class Sketch {
     let lon0 = this.data[0].lon + dLon * 180/PI 
 
 
-    console.log('!!!!=======',lat0,lon0)
-
+    console.log('!!!!FINAL=======',lat0,lon0)
+    // 49.71503061838623 23.965701913328182
+    // 49.715030650235846 23.96570190245439
 
 
   }
