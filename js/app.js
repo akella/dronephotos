@@ -1,15 +1,16 @@
 // @todo upload 2 photos get data + projection
 // put markers on them
-import ExifReader from 'exifreader';
-console.log(ExifReader,'ExifReader')
+import ExifReader from "exifreader";
+console.log(ExifReader, "ExifReader");
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import mapboxgl from "mapbox-gl";
 
-import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
-const {sin,cos, PI,acos,asin,sqrt,atan2,abs} = Math;
-var Line = require('three-line2')(THREE);
-var BasicShader = require('three-line2/shaders/basic')(THREE);
+import { MeshLine, MeshLineMaterial, MeshLineRaycast } from "three.meshline";
+const { sin, cos, PI, acos, asin, sqrt, atan2, abs } = Math;
+var Line = require("three-line2")(THREE);
+var BasicShader = require("three-line2/shaders/basic")(THREE);
 const {
   fract,
   lerp,
@@ -21,7 +22,7 @@ const {
 
 // house
 // 49.715026, 23.966039
-// -49.71646435825028 23.96490099917372 
+// -49.71646435825028 23.96490099917372
 
 import fragment from "./shader/fragment.glsl";
 import vertex from "./shader/vertex.glsl";
@@ -42,7 +43,6 @@ import camera from "../camera.glb";
 // import house2 from "../DJI_0207.jpg";
 // import house3 from "../DJI_0208.jpg";
 
-
 const ASPECT = 1.333;
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
   var R = 6371; // Radius of the earth in km
@@ -61,10 +61,10 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
 
 function deg2rad(deg) {
   return deg * (Math.PI / 180);
-};
+}
 function rad2deg(rad) {
-  return rad * ( 180/Math.PI);
-};
+  return rad * (180 / Math.PI);
+}
 
 function getAzimuth(lat1, lon1, lat2, lon2) {
   let phi1 = deg2rad(lat1);
@@ -75,7 +75,7 @@ function getAzimuth(lat1, lon1, lat2, lon2) {
     Math.cos(phi1) * Math.sin(phi2) -
     Math.sin(phi1) * Math.cos(phi2) * Math.cos(delta);
   var theta = Math.atan2(y, x);
-  return theta +2.45*0 ;
+  return theta + 2.45 * 0;
 }
 
 function todegrees(radians) {
@@ -92,8 +92,8 @@ function todegrees(radians) {
 export default class Sketch {
   constructor(options) {
     this.scene = new THREE.Scene();
-    this.helpers = new THREE.Group()
-    this.scene.add(this.helpers)
+    this.helpers = new THREE.Group();
+    this.scene.add(this.helpers);
 
     this.data = [
       // {
@@ -128,7 +128,6 @@ export default class Sketch {
       //   x: 753/1024,
       //   y: 139/767,
       // },
-      
       // {
       //   photo: photo3,
       //   lat: "49.716282, 23.969628",
@@ -201,8 +200,6 @@ export default class Sketch {
       //   FlightYawDegree: 73.3,
       //   FlightPitchDegree: 5.3,
       // },
-
-
       // {
       //   photo: house1,
       //   lat: "49.716282, 23.969628",
@@ -235,7 +232,6 @@ export default class Sketch {
       //     x: 1823/5280,
       //     y: 2962/3956,
       // },
-
       // {
       //   photo: house3,
       //   lat: "49.716282, 23.969628",
@@ -275,14 +271,16 @@ export default class Sketch {
     //   this.scene.add(this.cam)
 
     // })
-    this.geometry = new THREE.PlaneBufferGeometry(10, 10,100,100);
+    this.geometry = new THREE.PlaneBufferGeometry(10, 10, 100, 100);
     // this.geometry = new THREE.SphereBufferGeometry(300, 40,40);
     // this.geometry.translate(0,300,0)
 
-    this.ground = new THREE.Mesh(this.geometry, new THREE.MeshBasicMaterial({color:0x111111,wireframe: true}));
-    this.ground.rotation.x = -Math.PI/2
-    this.scene.add(this.ground)
-    
+    this.ground = new THREE.Mesh(
+      this.geometry,
+      new THREE.MeshBasicMaterial({ color: 0x111111, wireframe: true })
+    );
+    this.ground.rotation.x = -Math.PI / 2;
+    this.scene.add(this.ground);
 
     this.camera = new THREE.PerspectiveCamera(
       70,
@@ -290,7 +288,6 @@ export default class Sketch {
       0.001,
       1000
     );
-
 
     this.camera.position.set(0, 0.5, 0.5);
 
@@ -306,34 +303,48 @@ export default class Sketch {
     this.addLights();
     this.addDrag();
 
-    this.addObjects()
-
-    
+    this.addObjects();
+    this.initGoogleMap();
   }
 
-  buildThickRayFromVector(raydir, origin, color){
+  initGoogleMap() {
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiYWtlbGxhIiwiYSI6ImNsMnRoOW05eDA0YjUzZm8yNnJqd3lpMGoifQ.d6sdMSw6umVeQYYmBOcwrQ";
+    this.map = new mapboxgl.Map({
+      container: "map",
+      style: "mapbox://styles/mapbox/satellite-v9", // style URL
+      center: [23.969842139666298, 49.71631425130195],
+      zoom: 16,
+    });
+
+    // Create a default Marker and add it to the map.
+    this.marker = new mapboxgl.Marker()
+      .setLngLat([23.969842139666298, 49.71631425130195])
+      .addTo(this.map);
+
+    // Create a default Marker, colored black, rotated 45 degrees.
+    // const marker2 = new mapboxgl.Marker({ color: 'black', rotation: 45 })
+    // .setLngLat([12.65147, 55.608166])
+    // .addTo(map);
+  }
+
+  buildThickRayFromVector(raydir, origin, color) {
     // let raydir = new THREE.Vector3(0.,0.,1);
     // let origin = new THREE.Vector3(0,1,0);
-    let finalColor = color || 0x00ff00
+    let finalColor = color || 0x00ff00;
 
     const meshline = new MeshLine();
-    
+
     let curve = new THREE.LineCurve(
       // origin.clone().add(raydir.clone().multiplyScalar(10)),
       origin,
       origin.clone().add(raydir.clone().multiplyScalar(-10))
-    )
-    ;
+    );
+    const geometry = new THREE.TubeGeometry(curve, 2, 0.005, 8, false);
+    const material = new THREE.MeshStandardMaterial({ color: finalColor });
+    const mesh = new THREE.Mesh(geometry, material);
 
-
-    const geometry = new THREE.TubeGeometry( curve, 2, 0.005, 8, false );
-    const material = new THREE.MeshStandardMaterial( { color: finalColor } );
-    const mesh = new THREE.Mesh( geometry, material );
-    
-    
     return mesh;
-
-
   }
 
   setupsettings() {
@@ -349,58 +360,54 @@ export default class Sketch {
       photo4: true,
       photo5: true,
       photo6: true,
-      clean: ()=>{
-        this.clean(true)
-        document.getElementById('previews').replaceChildren()
-      }
+      clean: () => {
+        this.clean(true);
+        document.getElementById("previews").replaceChildren();
+      },
     };
     this.gui = new GUI();
     // this.gui.add(this.settings, "progress", 0, 1, 0.01);
     this.gui.add(this.settings, "fov", 0, 150, 0.01).onChange(() => {
-
-      this.data.forEach(d=>{
-        d.projcamera.fov = this.settings.fov
+      this.data.forEach((d) => {
+        d.projcamera.fov = this.settings.fov;
         d.projcamera.updateProjectionMatrix();
-        d.material.uniforms.textureMatrixProj.value = this.makeProjectiveMatrixForLight(d.projcamera,d.cam);
-        d.helper.update()
-      })
-
+        d.material.uniforms.textureMatrixProj.value =
+          this.makeProjectiveMatrixForLight(d.projcamera, d.cam);
+        d.helper.update();
+      });
     });
 
-    
-    this.gui.add(this.settings, "photo1").onChange(()=>{
-      this.toggle(0)
-    })
-    this.gui.add(this.settings, "photo2").onChange(()=>{
-      this.toggle(1)
-    })
-    this.gui.add(this.settings, "photo3").onChange(()=>{
-      this.toggle(2)
-    })
-    this.gui.add(this.settings, "photo4").onChange(()=>{
-      this.toggle(3)
-    })
-    this.gui.add(this.settings, "photo5").onChange(()=>{
-      this.toggle(4)
-    })
-    this.gui.add(this.settings, "photo6").onChange(()=>{
-      this.toggle(5)
-    })
+    this.gui.add(this.settings, "photo1").onChange(() => {
+      this.toggle(0);
+    });
+    this.gui.add(this.settings, "photo2").onChange(() => {
+      this.toggle(1);
+    });
+    this.gui.add(this.settings, "photo3").onChange(() => {
+      this.toggle(2);
+    });
+    this.gui.add(this.settings, "photo4").onChange(() => {
+      this.toggle(3);
+    });
+    this.gui.add(this.settings, "photo5").onChange(() => {
+      this.toggle(4);
+    });
+    this.gui.add(this.settings, "photo6").onChange(() => {
+      this.toggle(5);
+    });
 
-    this.gui.add(this.settings, "helpers").onChange(()=>{
-      this.helpers.visible = !this.helpers.visible
-    }) 
-    this.gui.add(this.settings, "clean")
-
+    this.gui.add(this.settings, "helpers").onChange(() => {
+      this.helpers.visible = !this.helpers.visible;
+    });
+    this.gui.add(this.settings, "clean");
   }
 
-  toggle(index){
-
+  toggle(index) {
     this.data[index].floor.visible = !this.data[index].floor.visible;
     this.data[index].cam.visible = !this.data[index].cam.visible;
     this.data[index].helper.visible = !this.data[index].helper.visible;
-    this.data[index].raymesh.visible = !this.data[index].raymesh.visible
-    this.data[index].projected.visible = !this.data[index].projected.visible
+    this.data[index].raymesh.visible = !this.data[index].raymesh.visible;
+    this.data[index].projected.visible = !this.data[index].projected.visible;
   }
 
   setupResize() {
@@ -420,34 +427,33 @@ export default class Sketch {
   // ====================================
   // ====================================
   // ====================================
-  addObjects(){
+  addObjects() {
     let relative = 40;
-    this.data.forEach((d,i)=>{
+    this.data.forEach((d, i) => {
       d.projcamera = new THREE.PerspectiveCamera(
         57,
         window.innerWidth / window.innerHeight,
         0.001,
         1000
       );
-      d.projcamera.aspect = ASPECT
+      d.projcamera.aspect = ASPECT;
 
       d.cam = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(0.06/4, 0.06/4, 0.1/4),
+        new THREE.BoxBufferGeometry(0.06 / 4, 0.06 / 4, 0.1 / 4),
         new THREE.MeshStandardMaterial({ color: 0xff0000 })
       );
 
-      this.scene.add(d.cam)
+      this.scene.add(d.cam);
 
-      d.helper = new THREE.CameraHelper( d.projcamera );
-      this.helpers.add( d.helper );
-
+      d.helper = new THREE.CameraHelper(d.projcamera);
+      this.helpers.add(d.helper);
 
       let az = getAzimuth(
         this.data[0].lat,
         this.data[0].lon,
         d.lat,
         d.lon,
-        2.45*0
+        2.45 * 0
       );
       let dist =
         10 *
@@ -458,14 +464,15 @@ export default class Sketch {
           d.lon
         );
 
-      let secondDrone = new THREE.Vector3(Math.sin(az), 0, Math.cos(az)).multiplyScalar(-dist);
-      if(i==0) secondDrone = new THREE.Vector3(0,0,0);
+      let secondDrone = new THREE.Vector3(
+        Math.sin(az),
+        0,
+        Math.cos(az)
+      ).multiplyScalar(-dist);
+      if (i == 0) secondDrone = new THREE.Vector3(0, 0, 0);
 
-      
-
-      d.cam.position.copy(secondDrone)
+      d.cam.position.copy(secondDrone);
       d.cam.position.y = d.relheight / 100;
-      
 
       let pitch1 = deg2rad(d.Pitch);
       let yaw1 = -deg2rad(d.FlightYawDegree);
@@ -478,10 +485,8 @@ export default class Sketch {
         new THREE.Vector3(0, 1, 0),
         yaw1
       );
-      let finalmat = new THREE.Matrix4().multiplyMatrices(matYaw, matPitch)
+      let finalmat = new THREE.Matrix4().multiplyMatrices(matYaw, matPitch);
       d.cam.rotation.setFromRotationMatrix(finalmat);
-
-
 
       d.material = new THREE.ShaderMaterial({
         extensions: {
@@ -504,50 +509,44 @@ export default class Sketch {
         fragmentShader: fragment,
       });
       d.floor = new THREE.Mesh(this.geometry, d.material);
-      this.scene.add(d.floor)
+      this.scene.add(d.floor);
       d.floor.rotation.x = Math.PI / 2;
-      
-      d.floor.position.y =  i*0.01;
-      this.ground.position.y = this.data.length*0.01;
 
-      
+      d.floor.position.y = i * 0.01;
+      this.ground.position.y = this.data.length * 0.01;
 
       let xx = lerp(
-        Math.tan(deg2rad(this.settings.fov/2))*ASPECT,
-        -Math.tan(deg2rad(this.settings.fov/2))*ASPECT,
+        Math.tan(deg2rad(this.settings.fov / 2)) * ASPECT,
+        -Math.tan(deg2rad(this.settings.fov / 2)) * ASPECT,
         d.x
-      )
+      );
 
       let yy = lerp(
-        -Math.tan(deg2rad(this.settings.fov/2)),
-        Math.tan(deg2rad(this.settings.fov/2)),
+        -Math.tan(deg2rad(this.settings.fov / 2)),
+        Math.tan(deg2rad(this.settings.fov / 2)),
         d.y
-      )
-      
-      let raydir = new THREE.Vector3(xx,yy,1)
-      raydir.applyMatrix4(finalmat)
+      );
+
+      let raydir = new THREE.Vector3(xx, yy, 1);
+      raydir.applyMatrix4(finalmat);
 
       d.ray = raydir;
 
-      d.raymesh = this.buildThickRayFromVector(
-        raydir,
-        d.cam.position
-      )
+      d.raymesh = this.buildThickRayFromVector(raydir, d.cam.position);
       // @TODO CALCULATE BEARING!
-      let v1 = new THREE.Vector2(d.ray.x,d.ray.z)
+      let v1 = new THREE.Vector2(d.ray.x, d.ray.z);
       d.projected = this.buildThickRayFromVector(
-        new THREE.Vector3(raydir.x,0,raydir.z),
+        new THREE.Vector3(raydir.x, 0, raydir.z),
         d.cam.position,
         0x0000ff
-      )
-      this.scene.add(d.projected)
-      let angle = v1.angle()
-      d.bearing = angle - Math.PI/2;
-      console.log('bearing',d.bearing)
+      );
+      this.scene.add(d.projected);
+      let angle = v1.angle();
+      d.bearing = angle - Math.PI / 2;
+      console.log("bearing", d.bearing);
 
-      this.scene.add(d.raymesh)
-
-    })
+      this.scene.add(d.raymesh);
+    });
     // ==============================================
     // ==============================================
     // ==============================================
@@ -555,55 +554,46 @@ export default class Sketch {
     // ==============================================
 
     // TRIANGULATE!!
-    if(this.data.length>1){
-      
+    if (this.data.length > 1) {
       let point1 = {
-        lat:this.data[0].lat,
-        lon:this.data[0].lon,
-        bearing: this.data[0].bearing
-      }
+        lat: this.data[0].lat,
+        lon: this.data[0].lon,
+        bearing: this.data[0].bearing,
+      };
       let point2 = {
-        lat:this.data[1].lat,
-        lon:this.data[1].lon,
-        bearing: this.data[1].bearing
-      }
-
+        lat: this.data[1].lat,
+        lon: this.data[1].lon,
+        bearing: this.data[1].bearing,
+      };
 
       // position RESULT object in scene
       // let intersection = this.intersect(point1,point2)
       // console.log(intersection)
       this.intersectRays(
-        this.data[0].cam.position,this.data[0].ray,
-        this.data[1].cam.position,this.data[1].ray,
-
-        )
-
+        this.data[0].cam.position,
+        this.data[0].ray,
+        this.data[1].cam.position,
+        this.data[1].ray
+      );
     }
     // end if
-   
-
-
   }
 
-  clean(flag){
-    this.data.forEach(d=>{
-
+  clean(flag) {
+    this.data.forEach((d) => {
       this.scene.remove(d.cam);
       this.scene.remove(d.projected);
       this.scene.remove(d.raymesh);
       this.scene.remove(d.floor);
       this.helpers.remove(d.helper);
+    });
 
-      
-    })
+    this.scene.remove(this.final);
 
-    this.scene.remove(this.final)
-
-    if(flag) this.data = []
+    if (flag) this.data = [];
   }
 
-  intersectRays(originA,rayA,originB,rayB){
-
+  intersectRays(originA, rayA, originB, rayB) {
     // find closest points on two rays
     let Nv = rayA.clone().cross(rayB);
 
@@ -618,132 +608,150 @@ export default class Sketch {
 
     let ptA = originA.clone().add(Da.multiplyScalar(-da));
     let ptB = originB.clone().add(Db.multiplyScalar(-db));
-    console.log(ptA,ptB,'CLOSEST POINT RESULTS')
-    this.putBallAt(ptB)
-
-
+    console.log(ptA, ptB, "CLOSEST POINT RESULTS");
+    this.putBallAt(ptB);
 
     // offset drone coordinate with meters
-    let R=6378137
+    let R = 6378137;
 
-    let dE = -(this.data[0].cam.position.x - ptA.x)*100;
-    let dN = (this.data[0].cam.position.z - ptA.z)*100;
+    let dE = -(this.data[0].cam.position.x - ptA.x) * 100;
+    let dN = (this.data[0].cam.position.z - ptA.z) * 100;
 
-    let dLat = dN/R
-    let dLon = dE/(R*cos(PI*this.data[0].lat/180))
+    let dLat = dN / R;
+    let dLon = dE / (R * cos((PI * this.data[0].lat) / 180));
 
-    let latRad = deg2rad(this.data[0].lat)
-    let lonRad = deg2rad(this.data[0].lon)
+    let latRad = deg2rad(this.data[0].lat);
+    let lonRad = deg2rad(this.data[0].lon);
 
-    let lat0 = this.data[0].lat + dLat * 180/PI
-    let lon0 = this.data[0].lon + dLon * 180/PI 
+    let lat0 = this.data[0].lat + (dLat * 180) / PI;
+    let lon0 = this.data[0].lon + (dLon * 180) / PI;
 
+    console.log("!!!!FINAL=======", lat0, lon0);
+    document.getElementById("result").innerHTML =
+      "lat:" + lat0 + "," + lon0 + ";";
 
-    console.log('!!!!FINAL=======',lat0,lon0)
-    document.getElementById('result').innerHTML = 'lat:'+lat0+','+lon0+';';
-    
+      this.map.setZoom(16)
+      // this.map.flyTo({
+      //   // center: [lat0,lon0]
+      //   center: [-91.3403, 0.0164]
+      // });
+      
+      this.marker.remove()
+
+      this.marker = new mapboxgl.Marker()
+      .setLngLat([lon0,lat0 ])
+      .addTo(this.map);
+
+      this.map.flyTo({
+          center: [lon0,lat0],
+          speed: 2
+      });
+
     // 49.71503061838623 23.965701913328182
     // 49.715030650235846 23.96570190245439
-
-
   }
 
-  intersect(point1,point2){
+  intersect(point1, point2) {
     let lon1 = deg2rad(point1.lon);
     let lon2 = deg2rad(point2.lon);
     let lat1 = deg2rad(point1.lat);
     let lat2 = deg2rad(point2.lat);
     let crs13 = point1.bearing;
     let crs23 = point2.bearing;
-    let crs12,crs21
+    let crs12, crs21;
     let pi = PI;
-    let dst12 = 2*asin(sqrt((sin((lat1-lat2)/2))**2+
-    cos(lat1)*cos(lat2)*sin((lon1-lon2)/2)**2));
-    if(sin(lon2-lon1)<0){
-       crs12=acos((sin(lat2)-sin(lat1)*cos(dst12))/(sin(dst12)*cos(lat1)))
-       crs21=2.*pi-acos((sin(lat1)-sin(lat2)*cos(dst12))/(sin(dst12)*cos(lat2)))
-    } else{
-       crs12=2.*pi-acos((sin(lat2)-sin(lat1)*cos(dst12))/(sin(dst12)*cos(lat1)))
-       crs21=acos((sin(lat1)-sin(lat2)*cos(dst12))/(sin(dst12)*cos(lat2)))
+    let dst12 =
+      2 *
+      asin(
+        sqrt(
+          sin((lat1 - lat2) / 2) ** 2 +
+            cos(lat1) * cos(lat2) * sin((lon1 - lon2) / 2) ** 2
+        )
+      );
+    if (sin(lon2 - lon1) < 0) {
+      crs12 = acos(
+        (sin(lat2) - sin(lat1) * cos(dst12)) / (sin(dst12) * cos(lat1))
+      );
+      crs21 =
+        2 * pi -
+        acos((sin(lat1) - sin(lat2) * cos(dst12)) / (sin(dst12) * cos(lat2)));
+    } else {
+      crs12 =
+        2 * pi -
+        acos((sin(lat2) - sin(lat1) * cos(dst12)) / (sin(dst12) * cos(lat1)));
+      crs21 = acos(
+        (sin(lat1) - sin(lat2) * cos(dst12)) / (sin(dst12) * cos(lat2))
+      );
     }
 
-    let ang1=(crs13-crs12+pi)%(2.*pi)-pi
-    let ang2=(crs21-crs23+pi)%(2.*pi)-pi
-    console.log(crs13,crs12,ang1,ang2)
+    let ang1 = ((crs13 - crs12 + pi) % (2 * pi)) - pi;
+    let ang2 = ((crs21 - crs23 + pi) % (2 * pi)) - pi;
+    console.log(crs13, crs12, ang1, ang2);
 
-    if(sin(ang1)===0 && sin(ang2)===0){
-       console.log("infinity of intersections")
-    }
-    else if(sin(ang1)*sin(ang2)<0){
-       console.log("intersection ambiguous")
-    }
-    else{
-       ang1=abs(ang1)
-       ang2=abs(ang2)
-       let ang3=acos(-cos(ang1)*cos(ang2)+sin(ang1)*sin(ang2)*cos(dst12)) 
-       let dst13=atan2(sin(dst12)*sin(ang1)*sin(ang2),cos(ang2)+cos(ang1)*cos(ang3))
-       let lat3=asin(sin(lat1)*cos(dst13)+cos(lat1)*sin(dst13)*cos(crs13))
-       let dlon=atan2(sin(crs13)*sin(dst13)*cos(lat1),cos(dst13)-sin(lat1)*sin(lat3))
-       let lon3=(lon1-dlon+pi)%(2*pi)-pi;
-      this.addBallAt()
+    if (sin(ang1) === 0 && sin(ang2) === 0) {
+      console.log("infinity of intersections");
+    } else if (sin(ang1) * sin(ang2) < 0) {
+      console.log("intersection ambiguous");
+    } else {
+      ang1 = abs(ang1);
+      ang2 = abs(ang2);
+      let ang3 = acos(
+        -cos(ang1) * cos(ang2) + sin(ang1) * sin(ang2) * cos(dst12)
+      );
+      let dst13 = atan2(
+        sin(dst12) * sin(ang1) * sin(ang2),
+        cos(ang2) + cos(ang1) * cos(ang3)
+      );
+      let lat3 = asin(
+        sin(lat1) * cos(dst13) + cos(lat1) * sin(dst13) * cos(crs13)
+      );
+      let dlon = atan2(
+        sin(crs13) * sin(dst13) * cos(lat1),
+        cos(dst13) - sin(lat1) * sin(lat3)
+      );
+      let lon3 = ((lon1 - dlon + pi) % (2 * pi)) - pi;
+      this.addBallAt();
     }
   }
 
-
-  putBallAt(v){
+  putBallAt(v) {
     this.final = new THREE.Mesh(
-      new THREE.SphereBufferGeometry(0.02,10,10),
-      new THREE.MeshBasicMaterial({color: 0x00ff00})
-    )
-      this.final.position.copy(v)
+      new THREE.SphereBufferGeometry(0.02, 10, 10),
+      new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    );
+    this.final.position.copy(v);
     this.scene.add(this.final);
   }
 
-
-
-
-
-  addBallAt(){
-    let lon = rad2deg(0.4183548261524481) 
-    let lat = rad2deg(0.86771280627482)
+  addBallAt() {
+    let lon = rad2deg(0.4183548261524481);
+    let lat = rad2deg(0.86771280627482);
     // let lon = todegrees(deg2rad(23.969627899))
     // let lat = todegrees(deg2rad(49.716281629))
-    let az = getAzimuth(
-      this.data[0].lat,
-      this.data[0].lon,
-      lat,
-      lon,
-      2.45*0
-    );
+    let az = getAzimuth(this.data[0].lat, this.data[0].lon, lat, lon, 2.45 * 0);
 
-    console.log(lon,lat, this.data[0].lon, this.data[0].lat,' SVER')
+    console.log(lon, lat, this.data[0].lon, this.data[0].lat, " SVER");
     let dist =
       10 *
-      getDistanceFromLatLonInKm(
-        this.data[0].lat,
-        this.data[0].lon,
-        lat,
-        lon
-      );
+      getDistanceFromLatLonInKm(this.data[0].lat, this.data[0].lon, lat, lon);
 
-    let interPos = new THREE.Vector3(Math.sin(az), 0, Math.cos(az)).multiplyScalar(-dist);
-
+    let interPos = new THREE.Vector3(
+      Math.sin(az),
+      0,
+      Math.cos(az)
+    ).multiplyScalar(-dist);
 
     let final = new THREE.Mesh(
-      new THREE.SphereBufferGeometry(0.02,10,10),
-      new THREE.MeshBasicMaterial({color: 0xff0000})
-    )
-      console.log(interPos,'interPos')
+      new THREE.SphereBufferGeometry(0.02, 10, 10),
+      new THREE.MeshBasicMaterial({ color: 0xff0000 })
+    );
+    console.log(interPos, "interPos");
     this.scene.add(final);
-    final.position.x = interPos.x
-    final.position.z = interPos.z
-
-
+    final.position.x = interPos.x;
+    final.position.z = interPos.z;
   }
 
-
-  makeProjectiveMatrixForLight(camera,camobject) {
-
+  makeProjectiveMatrixForLight(camera, camobject) {
     camera.position.copy(camobject.position);
     camera.rotation.copy(camobject.rotation);
 
@@ -754,12 +762,23 @@ export default class Sketch {
     var lightMatrix = new THREE.Matrix4();
     var targetPosition = new THREE.Vector3();
 
-
     lightMatrix.set(
-      0.5,0.0,0.0,0.5,
-      0.0,0.5,0.0,0.5,
-      0.0,0.0,0.5,0.5,
-      0.0,0.0,0.0,1.0
+      0.5,
+      0.0,
+      0.0,
+      0.5,
+      0.0,
+      0.5,
+      0.0,
+      0.5,
+      0.0,
+      0.0,
+      0.5,
+      0.5,
+      0.0,
+      0.0,
+      0.0,
+      1.0
     );
 
     lightMatrix.multiply(camera.projectionMatrix);
@@ -788,109 +807,91 @@ export default class Sketch {
     //   this.scene.add( light4 );
   }
 
-
-  addDrag(){
-
-    let drag = document.createElement('div');
+  addDrag() {
+    let drag = document.createElement("div");
     document.body.appendChild(drag);
-    drag.style.position = 'fixed';
-    drag.style.top = '50px'
-    drag.style.left = '50px'
-    drag.style.width = '300px'
-    drag.style.height = '100px'
-    drag.style.border = '10px dotted gray'
+    drag.style.position = "fixed";
+    drag.style.top = "50px";
+    drag.style.left = "50px";
+    drag.style.width = "300px";
+    drag.style.height = "100px";
+    drag.style.border = "10px dotted gray";
 
-    drag.addEventListener( 'dragover',  ( event )=>{
+    drag.addEventListener("dragover", (event) => {
       event.preventDefault();
-      event.dataTransfer.dropEffect = 'copy';
-    } );
+      event.dataTransfer.dropEffect = "copy";
+    });
 
-    drag.addEventListener( 'drop',  ( event )=> {
+    drag.addEventListener("drop", (event) => {
       event.preventDefault();
-      this.loadFile( event.dataTransfer.files[ 0 ] );
-    } );
+      this.loadFile(event.dataTransfer.files[0]);
+    });
   }
 
-  loadFile(file){
-
-   
-
-    const tags = ExifReader.load(file).then((tagresult)=>{
+  loadFile(file) {
+    const tags = ExifReader.load(file).then((tagresult) => {
       const reader = new FileReader();
       let that = this;
-      
-  
-      reader.addEventListener( 'load',  ( event )=> {
-        function imgCallback( event ) {
-          that.addNewImg(event.target,tagresult) //img
+
+      reader.addEventListener("load", (event) => {
+        function imgCallback(event) {
+          that.addNewImg(event.target, tagresult); //img
         }
         const img = new Image();
         img.onload = imgCallback;
         img.src = event.target.result;
-      } );
-  
-      reader.readAsDataURL( file );
+      });
+
+      reader.readAsDataURL(file);
     });
-
-
-   
   }
 
-  updateAll(){
-    this.clean()
-    this.addObjects()
+  updateAll() {
+    this.clean();
+    this.addObjects();
   }
 
-
-  addNewImg(img,tags){
-    console.log(tags,'tags')
+  addNewImg(img, tags) {
+    console.log(tags, "tags");
     let photo = new THREE.Texture(img);
     photo.needsUpdate = true;
     let obj = {
-        photo: photo,
-        lat: tags.GPSLatitude.description, 
-        lon: 	tags.GPSLongitude.description,
-        absheight: tags.AbsoluteAltitude.value,
-        relheight: tags.RelativeAltitude.value,
-        Roll: tags.GimbalRollDegree.value,
-        Yaw: tags.GimbalYawDegree.value,
-        Pitch: 	tags.GimbalPitchDegree.value,
-        FlightRollDegree: tags.FlightRollDegree.value,
-        FlightYawDegree: 	tags.FlightYawDegree.value,
-        FlightPitchDegree: tags.FlightPitchDegree.value,
-        x: 0.5,
-        y: 0.5
-    }
-    this.data.push(obj)
+      photo: photo,
+      lat: tags.GPSLatitude.description,
+      lon: tags.GPSLongitude.description,
+      absheight: tags.AbsoluteAltitude.value,
+      relheight: tags.RelativeAltitude.value,
+      Roll: tags.GimbalRollDegree.value,
+      Yaw: tags.GimbalYawDegree.value,
+      Pitch: tags.GimbalPitchDegree.value,
+      FlightRollDegree: tags.FlightRollDegree.value,
+      FlightYawDegree: tags.FlightYawDegree.value,
+      FlightPitchDegree: tags.FlightPitchDegree.value,
+      x: 0.5,
+      y: 0.5,
+    };
+    this.data.push(obj);
 
+    let previews = document.getElementById("previews");
+    let wrap = document.createElement("div");
+    let marker = document.createElement("div");
+    marker.classList.add("marker");
+    let DOMimage = img.cloneNode(true);
+    DOMimage.style.height = "200px";
+    wrap.appendChild(DOMimage);
+    wrap.appendChild(marker);
+    previews.appendChild(wrap);
+    DOMimage.addEventListener("click", (event) => {
+      console.log(event);
+      obj.x = event.offsetX / (200 * ASPECT);
+      obj.y = event.offsetY / 200;
+      marker.style.left = event.offsetX + "px";
+      marker.style.top = event.offsetY + "px";
+      this.updateAll();
+    });
 
-    let previews = document.getElementById('previews');
-    let wrap = document.createElement('div')
-    let marker = document.createElement('div')
-    marker.classList.add('marker');
-    let DOMimage = img.cloneNode(true)
-    DOMimage.style.height = '200px'
-    wrap.appendChild(DOMimage)
-    wrap.appendChild(marker)
-    previews.appendChild(wrap)
-    DOMimage.addEventListener('click',(event)=>{
-      console.log(event)
-      obj.x = event.offsetX/(200*ASPECT)
-      obj.y = event.offsetY/(200)
-      marker.style.left = event.offsetX+'px'
-      marker.style.top = event.offsetY+'px'
-      this.updateAll()
-    })
-
-
-
-    this.clean()
-    this.addObjects()
-
-
-
-
-
+    this.clean();
+    this.addObjects();
 
     // {
     //   photo: house2,
@@ -908,7 +909,6 @@ export default class Sketch {
     //     x: 1823/5280,
     //     y: 2962/3956,
     // },
-
   }
 
   render() {

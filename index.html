@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+	<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' rel='stylesheet' />
 	<style>
 		*{margin:0;padding:0} 
 		canvas{display: block}
@@ -64,9 +65,18 @@
 			padding: 5px;
 			text-shadow: 1px 1px 0 #000;
 		}
+		#map{
+			position: fixed;
+			bottom:0;
+			right:0;
+			width: 400px;
+			height: 300px;
+			z-index: 1000;
+		}
     </style>
 </head>
 <body>
+	<div id="map"></div>
 	<div id="result"></div>
 	<div id="previews"></div>
 	<div id="container"></div>
